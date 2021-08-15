@@ -1,7 +1,8 @@
 const createProduct = (req, res) => {
     const dbInstance = req.app.get('db');
+    const { product_name, description, price, image_url } = req.body;
 
-    dbInstance.create_product()
+    dbInstance.create_product([ product_name, description, price, image_url ])
     .then( () => res.sendStatus(200) )
     .catch( (e) => {
         res.status(500).sendStatus({errorMessage: "Oops! Something went wrong."});
@@ -12,8 +13,9 @@ const createProduct = (req, res) => {
 
 const getOne = (req, res) => {
     const dbInstance = req.app.get('db');
+    const { id } = req.params;
 
-    dbInstance.read_product()
+    dbInstance.read_product( id )
     .then( product => res.status(200).send( product ) )
     .catch( (e) => {
         res.status(500).sendStatus({errorMessage: "Oops! Something went wrong."});
@@ -34,8 +36,9 @@ const getAll = (req, res) => {
 
 const updateProduct = (req, res) => {
     const dbInstance = req.app.get('db');
+    const { params, query } = req;
 
-    dbInstance.update_product()
+    dbInstance.update_product([ params.id, query.desc ])
     .then( () => res.sendStatus(200) )
     .catch( (e) => {
         res.status(500).sendStatus({errorMessage: "Oops! Something went wrong."});
@@ -45,8 +48,9 @@ const updateProduct = (req, res) => {
 
 const deleteProduct = (req,res) => {
     const dbInstance = req.app.get('db');
+    const { id } = req.params;
 
-    dbInstance.delete_product()
+    dbInstance.delete_product( id )
     .then( () => sendStatus(200) )
     .catch( (e) => {
         res.status(500).sendStatus({errorMessage: "Oops! Something went wrong."});
